@@ -57,6 +57,8 @@ TowrRosInterface::TowrRosInterface ()
   robot_parameters_pub_  = n.advertise<xpp_msgs::RobotParameters>
                                     (xpp_msgs::robot_parameters, 1);
 
+  foot_state_pub_ = n.advertise<xpp_msgs::RobotStateCartesianTrajectory>("state_trace", 1);
+
   solver_ = std::make_shared<ifopt::IpoptSolver>();
 
   visualization_dt_ = 0.01;
@@ -71,6 +73,10 @@ TowrRosInterface::GetGoalState(const TowrCommandMsg& msg) const
   goal.ang.at(kPos) = xpp::Convert::ToXpp(msg.goal_ang.pos);
   goal.ang.at(kVel) = xpp::Convert::ToXpp(msg.goal_ang.vel);
 
+  std::cout<<goal.lin.at(kPos).x()<<" "<<goal.lin.at(kPos).y()<<" "<<goal.lin.at(kPos).z()<<"\n";
+  std::cout<<goal.lin.at(kVel).x()<<" "<<goal.lin.at(kVel).y()<<" "<<goal.lin.at(kVel).z()<<"\n";
+  std::cout<<goal.ang.at(kPos).x()<<" "<<goal.ang.at(kPos).y()<<" "<<goal.ang.at(kPos).z()<<"\n";
+  std::cout<<goal.ang.at(kVel).x()<<" "<<goal.ang.at(kVel).y()<<" "<<goal.ang.at(kVel).z()<<"\n";
   return goal;
 }
 
@@ -111,6 +117,10 @@ TowrRosInterface::UserCommandCallback(const TowrCommandMsg& msg)
 
     solver_->Solve(nlp_);
     SaveOptimizationAsRosbag(bag_file, robot_params_msg, msg, false);
+    // xpp_msgs::RobotStateCartesianTrajectory xpp_msg = xpp::Convert::ToRos(GetTrajectory());
+    // foot_state_pub_.publish(xpp_msg);
+    // This should be uncommented for testing may give errors incase of empty trajectories.
+    
   }
 
   // playback using terminal commands
@@ -127,7 +137,6 @@ TowrRosInterface::UserCommandCallback(const TowrCommandMsg& msg)
   }
 
   // to publish entire trajectory (e.g. to send to controller)
-  // xpp_msgs::RobotStateCartesianTrajectory xpp_msg = xpp::Convert::ToRos(GetTrajectory());
 }
 
 void

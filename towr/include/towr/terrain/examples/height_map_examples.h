@@ -30,6 +30,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef TOWR_TOWR_ROS_INCLUDE_TOWR_ROS_HEIGHT_MAP_EXAMPLES_H_
 #define TOWR_TOWR_ROS_INCLUDE_TOWR_ROS_HEIGHT_MAP_EXAMPLES_H_
 
+#define SCALE 0.45
+
 #include <towr/terrain/height_map.h>
 
 namespace towr {
@@ -60,11 +62,11 @@ public:
   double GetHeightDerivWrtX(double x, double y) const override;
 
 private:
-  double block_start = 0.7;
-  double length_     = 3.5;
-  double height_     = 0.5; // [m]
+  double block_start = 0.7*SCALE;
+  double length_     = 3.5*SCALE;
+  double height_     = 0.5*SCALE; // [m]
 
-  double eps_ = 0.03; // approximate as slope
+  double eps_ = 0.03*SCALE; // approximate as slope
   const double slope_ = height_/eps_;
 };
 
@@ -76,11 +78,11 @@ public:
   double GetHeight(double x, double y) const override;
 
 private:
-  double first_step_start_  = 1.0;
-  double first_step_width_  = 0.4;
-  double height_first_step  = 0.2;
-  double height_second_step = 0.4;
-  double width_top = 1.0;
+  double first_step_start_  = 1.0*SCALE;
+  double first_step_width_  = 0.4*SCALE;
+  double height_first_step  = 0.2*SCALE;
+  double height_second_step = 0.4*SCALE;
+  double width_top = 1.0*SCALE;
 };
 
 /**
@@ -93,9 +95,9 @@ public:
   double GetHeightDerivWrtXX(double x, double y) const override;
 
 private:
-  const double gap_start_ = 1.0;
-  const double w = 0.5;
-  const double h = 1.5;
+  const double gap_start_ = 1.0*SCALE;
+  const double w = 0.5*SCALE;
+  const double h = 1.5*SCALE;
 
   const double slope_ = h/w;
   const double dx = w/2.0;
@@ -120,10 +122,10 @@ public:
   double GetHeightDerivWrtX(double x, double y) const override;
 
 private:
-  const double slope_start_ = 1.0;
-  const double up_length_   = 1.0;
-  const double down_length_ = 1.0;
-  const double height_center = 0.7;
+  const double slope_start_ = 1.0*SCALE;
+  const double up_length_   = 1.0*SCALE;
+  const double down_length_ = 1.0*SCALE;
+  const double height_center = 0.7*SCALE;
 
   const double x_down_start_ = slope_start_+up_length_;
   const double x_flat_start_ = x_down_start_ + down_length_;
@@ -139,9 +141,9 @@ public:
   double GetHeightDerivWrtY(double x, double y) const override;
 
 private:
-  const double x_start_ = 1.0;
-  const double length_  = 1.5;
-  const double y_start_ = 0.5; // distance to start of slope from center at z=0
+  const double x_start_ = 1.0*SCALE;
+  const double length_  = 1.5*SCALE;
+  const double y_start_ = 0.5*SCALE; // distance to start of slope from center at z=0
   const double slope_   = 3.0;
 
   const double x_end_ = x_start_+length_;
@@ -156,9 +158,9 @@ public:
   double GetHeightDerivWrtY(double x, double y) const override;
 
 private:
-  const double x_start_ = 0.5;
-  const double length_  = 1.0;
-  const double y_start_ = 0.5; // distance to start of slope from center at z=0
+  const double x_start_ = 0.5*SCALE;
+  const double length_  = 1.0*SCALE;
+  const double y_start_ = 0.5*SCALE; // distance to start of slope from center at z=0
   const double slope_   = 2;
 
   const double x_end1_ = x_start_+length_;
